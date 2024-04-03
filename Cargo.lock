@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "json-minimal2"
+name = "json_minimal2"
 version = "0.1.0"
