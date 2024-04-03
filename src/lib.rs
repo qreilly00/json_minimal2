@@ -1,9 +1,9 @@
 use std::collections::HashMap;
 
 #[derive(Debug, PartialEq)]
-pub enum Json {
-    Object(HashMap<String,Json>),
-    Array(Vec<Json>),
+pub enum Json<'a> {
+    Object(HashMap<&'a str,Json<'a>>),
+    Array(Vec<Json<'a>>),
     String(String),
     Number(f64),
     Bool(bool),
@@ -20,16 +20,16 @@ pub enum ParseError {
     Undefined
 }
 
-impl Json {
-    pub fn new_object() -> Json {
+impl<'a> Json<'a> {
+    pub fn new_object() -> Json<'a> {
         Json::Object(HashMap::new())
     }
 
-    pub fn new_array() -> Json {
+    pub fn new_array() -> Json<'a> {
         Json::Array(Vec::new())
     }
 
-    pub fn string_from(value: &str) -> Json {
+    pub fn string_from(value: &str) -> Json<'a> {
         Json::String(String::from(value))
     }
 
@@ -48,11 +48,11 @@ impl Json {
     }
 
     // maybe it would be better to just panic
-    pub fn insert(&mut self, name: &str, value: Json) {
+    pub fn insert(&mut self, name: &'a str, value: Json<'a>) {
         match self {
             Json::Object(name_value_pairs) => {
 
-                name_value_pairs.insert(String::from(name),value);
+                name_value_pairs.insert(name,value);
 
             },
             _ => {}
@@ -70,7 +70,7 @@ impl Json {
         }
     }
 
-    pub fn push(&mut self, new_value: Json) {
+    pub fn push(&mut self, new_value: Json<'a>) {
         match self {
             Json::Array(values) => {
 
@@ -134,7 +134,7 @@ impl Json {
         }
     }
 
-    pub fn parse(input: &str) -> Result<Json,ParseError> {
+    pub fn parse(input: &'a str) -> Result<Json,ParseError> {
         let mut input: Vec<char> = input.chars().collect();
 
         let mut index: usize = 0;
@@ -181,25 +181,25 @@ impl Json {
 
     }
 
-    fn parse_object(input: &mut Vec<char>, index: &mut usize) -> Result<Json,ParseError> {
+    fn parse_object(input: &mut Vec<char>, index: &mut usize) -> Result<Json<'a>,ParseError> {
         todo!()
 
         // Five it a go in the same style.
     }
 
-    fn parse_array(input: &mut Vec<char>, index: &mut usize) -> Result<Json,ParseError> {
+    fn parse_array(input: &mut Vec<char>, index: &mut usize) -> Result<Json<'a>,ParseError> {
         todo!()
 
         // Give it a go in the same style.
     }
 
-    fn parse_value(input: &mut Vec<char>, index: &mut usize)  -> Result<Json,ParseError> {
+    fn parse_value(input: &mut Vec<char>, index: &mut usize)  -> Result<Json<'a>,ParseError> {
         todo!()
 
         // Make this the same as Self::parse.
     }
 
-    fn parse_string(input: &mut Vec<char>, index: &mut usize) -> Result<Json,ParseError> {
+    fn parse_string(input: &mut Vec<char>, index: &mut usize) -> Result<Json<'a>,ParseError> {
 
         let mut string = String::new();
 
@@ -232,7 +232,7 @@ impl Json {
         Ok(Json::String(string))
     }
 
-    fn parse_number(input: &mut Vec<char>, index: &mut usize) -> Result<Json,ParseError> {
+    fn parse_number(input: &mut Vec<char>, index: &mut usize) -> Result<Json<'a>,ParseError> {
         
 
         let mut number = String::new();
