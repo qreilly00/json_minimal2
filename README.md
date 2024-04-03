@@ -1,2 +1,2 @@
-# json-minimal2
+# json_minimal2
 A re-make of the json_minimal crate.
