@@ -59,6 +59,17 @@ impl<'a> Json<'a> {
         }
     }
 
+    pub fn get(&mut self, name: &'a str) -> Option<&Json<'a>> {
+        match self {
+            Json::Object(name_value_pairs) => {
+                name_value_pairs.get(name)
+            },
+            _ => {
+                None
+            }
+        }
+    }
+
     pub fn remove(&mut self, name: &str) {
         match self {
             Json::Object(name_value_pairs) => {
