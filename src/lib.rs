@@ -92,6 +92,17 @@ impl<'a> Json<'a> {
         }
     }
 
+    pub fn pull(&self, index: usize) -> Option<&Json<'a>> {
+        match self {
+            Json::Array(values) => {
+                values.get(index)
+            },
+            _ => {
+                None
+            }
+        }
+    }
+
     pub fn print(&self) -> String {
         match self {
             Json::Object(name_value_pairs) => {
